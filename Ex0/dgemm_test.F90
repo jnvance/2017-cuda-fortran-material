@@ -3,7 +3,10 @@
 !  C = alpha A*B + beta C
 !
 program matrix_multiply
-
+#ifdef __CUDA__
+ use cudafor
+ use cublas
+#endif
 implicit none
 
 ! Define the floating point kind to be  single_precision
@@ -16,7 +19,10 @@ double precision ::      time_start,time_end, wallclock
 real (fp_kind)::      alpha=1._fp_kind,beta=1._fp_kind, c_right
 integer::  i,j,m1,m2
 
-
+#ifdef __CUDA__
+attributes(device) :: A, B, C
+integer :: istat
+#endif
 
 do m1=128,4096,64
 
@@ -34,15 +40,21 @@ do m1=128,4096,64
 
 ! Compute the matrix product  computation
  !call cpu_time(time_start)
+#ifdef __CUDA__
+ istat = cudaDeviceSynchronize()
+#endif
  time_start= wallclock();
 
   call dgemm('n','n',m1,m1,m1,alpha,A,m1,B,m1,beta,C,m1)
 
+#ifdef __CUDA__
+ istat = cudaDeviceSynchronize()
+#endif
  !call cpu_time(time_end)
  time_end= wallclock();
 
 ! Print timing information
- print "(i5,1x,a,1x,f9.5,2x,a,f12.4)", m1, " time =",time_end-time_start, " MFLOPS=",1.e-6*2._fp_kind*m1*m1*m1/(time_end-time_start)
+ print "(i5,1x,a,1x,f9.5,2x,a,f16.4)", m1, " time =",time_end-time_start, " MFLOPS=",1.e-6*2._fp_kind*m1*m1*m1/(time_end-time_start)
 
 ! check the result
 !     do j=1,m1
