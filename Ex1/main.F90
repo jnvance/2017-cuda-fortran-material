@@ -1,8 +1,13 @@
 program example_vector_add
+#ifdef __CUDA__
+use cudafor
+#endif
+implicit none
+
 real, allocatable:: a(:)
 integer:: i, N
 
-N=32
+N=32000
 allocate(a(N))
 
 a=1.

@@ -1,7 +1,11 @@
-all: example_vector_add 
+all: vadd_cpu vadd_gpu
 
-example_vector_add: main.f90 vector_add.f90
-	pgf90 -O3 main.f90 vector_add.f90 -o example_vector_add
+vadd_cpu: main.F90 vector_add.F90
+	pgf90  main.F90 vector_add.F90 -o vadd_cpu
+
+vadd_gpu: main.F90 vector_add.F90
+	
+	pgf90 main.F90 vector_add.F90 -o vadd_gpu -lblas -Mcuda=cc35,cuda8.0 -D__CUDA__
 
 clean:
-	rm *.o *.mod example_vector_add 
+	rm *.o *.mod vadd_cpu vadd_gpu
