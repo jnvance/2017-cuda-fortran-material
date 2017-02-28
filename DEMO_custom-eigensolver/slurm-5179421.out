@@ -1,0 +1,18 @@
+ Using QEspresso matrices...
+ Running with N =          1600
+ Performing cholesky factorizations....
+ 	Time for MKL zpotrf =    0.3748660087585449     
+ 
+ 	Time for magmaf_zpotrf_gpu =    2.9180049896240234E-002
+ 
+ 	Time for cusolverDnZpotrf =    1.6251087188720703E-002
+ 
+ Performing reduction to generalized Eigenproblem....
+ 	Time for MKL zhegst =    0.9544630050659180     
+ 
+ 	Time for magmaf_zhegst_gpu =    9.0255975723266602E-002
+ 
+ 	Time for zhegst_gpu_v1 =    4.9205064773559570E-002
+ 
+ 	Time for zhegst_gpu_v2 =    3.5238027572631836E-002
+ 
